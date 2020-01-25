@@ -1,6 +1,7 @@
 import java.awt.image.BufferedImage;
 import java.io.File;
 import javax.imageio.IIOException;
+import java.io.PrintWriter;
 import java.util.concurrent.*;
 import java.util.Random;
 
@@ -9,10 +10,11 @@ import javax.imageio.ImageIO;
 public class TestImageFilter {
 
 	public static void main(String[] args) throws Exception {
-		
+
 		BufferedImage image = null;
 		String srcFileName = null;
-		int nthreads = 8;
+		String outFileName = null;
+
 		try {
 			srcFileName = args[0];
 			File srcFile = new File(srcFileName);
@@ -27,26 +29,37 @@ public class TestImageFilter {
 			System.exit(1);
 		}
 
+		outFileName = srcFileName.equals("IMAGE1.JPG") ? "out1.txt" : "out2.txt";
+
+		PrintWriter out = new PrintWriter(outFileName);
+		out.print("");
+
 		System.out.println("Source image: " + srcFileName);
+		out.println("Source image: " + srcFileName);
 
 		int w = image.getWidth();
 		int h = image.getHeight();
+
 		System.out.println("Image size is " + w + "x" + h);
 		System.out.println();
-	
+
+		out.println("Image size is " + w + "x" + h);
+		out.println();
+
 		int[] src = image.getRGB(0, 0, w, h, null, 0, w);
-		int[] srcP = image.getRGB(0, 0, w, h, null, 0, w);
 		int[] dst = new int[src.length];
 
 		System.out.println("Starting sequential image filter.");
+		out.println("Starting sequential image filter.");
 
 		long startTime = System.currentTimeMillis();
-//		ImageFilter filter0 = new ImageFilter(src, dst, w, h);
-//		filter0.apply();
+		ImageFilter filter0 = new ImageFilter(src, dst, w, h);
+		filter0.apply();
 		long endTime = System.currentTimeMillis();
 
 		long tSequential = endTime - startTime;
 		System.out.println("Sequential image filter took " + tSequential + " milliseconds.");
+		out.println("Sequential image filter took " + tSequential + " milliseconds.");
 
 		BufferedImage dstImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
 		dstImage.setRGB(0, 0, w, h, dst, 0, w);
@@ -56,58 +69,93 @@ public class TestImageFilter {
 		ImageIO.write(dstImage, "jpg", dstFile);
 
 		System.out.println("Output image: " + dstName);
+		out.println("Output image: " + dstName);
 
         System.out.println("\nAvailable processors: " + Runtime.getRuntime().availableProcessors());
+        out.println();
+		out.println("Available processors: " + Runtime.getRuntime().availableProcessors());
 
-		System.out.println("\nStarting parallel image filter using " + nthreads + " threads.");
+		for (int nthreads = 1; nthreads <= 16; nthreads = nthreads * 2)
+		{
+			System.out.println("\nStarting parallel image filter using " + nthreads + " threads.");
+			out.println();
+			out.println("Starting parallel image filter using " + nthreads + " threads.");
 
-		int[] dstP = new int[srcP.length];
+			int[] srcP = image.getRGB(0, 0, w, h, null, 0, w);
+			int[] dstP = new int[srcP.length];
+			int threshold = (h / nthreads) + 2;
 
-		ParallelFJImageFilter filter1 = new ParallelFJImageFilter(srcP, dstP, w, 1, h - 1);
-		ForkJoinPool pool = new ForkJoinPool(nthreads);
+            startTime = System.currentTimeMillis();
+            for (int NRSTEPS = 0; NRSTEPS < 100; NRSTEPS++)
+            {
+                ParallelFJImageFilter filter1 = new ParallelFJImageFilter(srcP, dstP, threshold, w, 1, h - 1);
+                ForkJoinPool pool = new ForkJoinPool(nthreads);
+                pool.invoke(filter1);
 
-		startTime = System.currentTimeMillis();
-		pool.invoke(filter1);
-		endTime = System.currentTimeMillis();
+				int[] help; help = srcP; srcP = dstP; dstP = help;
+            }
+			endTime = System.currentTimeMillis();
 
-		long tParallel = endTime - startTime;
+			long tParallel = endTime - startTime;
 
-		BufferedImage dstPImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
-		dstPImage.setRGB(0, 0, w, h, dstP, 0, w);
+			BufferedImage dstPImage = new BufferedImage(w, h, BufferedImage.TYPE_INT_RGB);
+			dstPImage.setRGB(0, 0, w, h, dstP, 0, w);
 
-		boolean isSame = CompareImages(dstImage, dstPImage, w, h);
+			boolean isSame = CompareImages(dstImage, dstPImage, w, h);
 
-		System.out.println("Parallel image filter took " + tParallel + " milliseconds using " + nthreads + " threads.");
-		System.out.println("Output image verified " + (isSame ? "successfully" : "unsuccessfully!"));
+			System.out.println("Parallel image filter took " + tParallel + " milliseconds using " + nthreads + " threads.");
+			System.out.println("Output image verified " + (isSame ? "successfully" : "unsuccessfully!"));
+			System.out.println("Speedup: " + SpeedUp(tSequential, tParallel, nthreads));
 
-		String dstPName = "ParallelFiltered" + srcFileName;
-		File dstPFile = new File(dstPName);
-		ImageIO.write(dstPImage, "jpg", dstPFile);
+			out.println("Parallel image filter took " + tParallel + " milliseconds using " + nthreads + " threads.");
+			out.println("Output image verified " + (isSame ? "successfully" : "unsuccessfully!"));
+			out.println("Speedup: " + SpeedUp(tSequential, tParallel, nthreads));
 
-		System.out.println("\nOutput image (parallel filter): " + dstPName);
+			if (nthreads == 16)
+			{
+				String dstPName = "ParallelFiltered" + srcFileName;
+				File dstPFile = new File(dstPName);
+				ImageIO.write(dstPImage, "jpg", dstPFile);
+
+				System.out.println("\nOutput image (parallel filter): " + dstPName);
+				out.println();
+				out.println("Output image (parallel filter): " + dstPName);
+			}
+		}
+
+		out.close();
 	}
 
 	public static boolean CompareImages(BufferedImage img1, BufferedImage img2, int w, int h)
+    {
+        for (int x = 0; x < w; x++)
+        {
+            for (int y = 0; y < h; y++)
+            {
+                if (img1.getRGB(x, y) != img2.getRGB(x, y))
+                {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    public static String SpeedUp(long tSequential, long tParallel, int threadNumber)
 	{
-		Random rand = new Random();
+		String response = "";
+		double speedUp = (double)tSequential / (double)tParallel;
+		double threadSpeedUp = (0.7 * threadNumber);
 
-		System.out.println("Img1[2913][3326]: " + img2.getRGB(2913, 3326) + " , actual value = -14410220");
-		System.out.println("Img1[306][607]: " + img2.getRGB(306, 607) + " , actual value = -10138305");
-		System.out.println("Img1[13][3577]: " + img2.getRGB(13, 3577) + " , actual value = -16316922");
+		if (tParallel <= ((double)tSequential / threadSpeedUp))
+		{
+			response = speedUp + " ok (>= " + threadSpeedUp + ")";
+		}
+		else
+		{
+			response = String.valueOf(speedUp);
+		}
 
-//		for (int i = 0; i < 3; i++)
-//		{
-//            int width = rand.nextInt(w);
-//            int height = rand.nextInt(h);
-//
-//			System.out.println("Img1[" + width + "][" + height + "]: " + img1.getRGB(width, height));
-//			System.out.println("Img2[" + width + "][" + height + "]: " + img2.getRGB(width, height));
-//
-////            if (img1.getRGB(width, height) != img2.getRGB(width, height))
-////			{
-////				return false;
-////			}
-//		}
-		return true;
+		return response;
 	}
 }

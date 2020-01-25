@@ -7,13 +7,14 @@ public class ParallelFJImageFilter extends RecursiveAction{
     private int width;
     private int start;
     private int end;
+    private int threshold;
 
     private final int NRSTEPS = 100;
-    private final int threshold = 600;
 
-    public ParallelFJImageFilter(int[] src, int[] dst, int w, int s, int e) {
+    public ParallelFJImageFilter(int[] src, int[] dst, int threshold, int w, int s, int e) {
         this.src = src;
         this.dst = dst;
+        this.threshold = threshold;
         width = w;
         start = s;
         end = e;
@@ -22,9 +23,9 @@ public class ParallelFJImageFilter extends RecursiveAction{
     public void apply() {
         int index, pixel;
 
-        System.out.println("start: " + start + ", end " + end);
-
-        for (int steps = 0; steps < NRSTEPS; steps++) {
+//      System.out.println("start: " + start + ", end " + end);
+//
+//        for (int steps = 0; steps < NRSTEPS; steps++) {
             for (int i = start; i < end; i++) {
                 for (int j = 1; j < width - 1; j++) {
                     float rt = 0, gt = 0, bt = 0;
@@ -55,7 +56,7 @@ public class ParallelFJImageFilter extends RecursiveAction{
             }
             // swap references
             int[] help; help = src; src = dst; dst = help;
-        }
+//        }
     }
 
     @Override
@@ -67,8 +68,8 @@ public class ParallelFJImageFilter extends RecursiveAction{
             double temp = (double) (start + end) / (double) 2;
             int middle = (int) Math.round(temp/10.0) * 10;
 
-            ParallelFJImageFilter subTask1 = new ParallelFJImageFilter(src, dst, width, start, middle);
-            ParallelFJImageFilter subTask2 = new ParallelFJImageFilter(src, dst, width, middle, end);
+            ParallelFJImageFilter subTask1 = new ParallelFJImageFilter(src, dst, threshold, width, start, middle);
+            ParallelFJImageFilter subTask2 = new ParallelFJImageFilter(src, dst, threshold, width, middle, end);
 
             invokeAll(subTask1, subTask2);
         }

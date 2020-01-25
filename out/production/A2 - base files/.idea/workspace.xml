@@ -26,7 +26,7 @@
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.0" />
-    <property name="settings.editor.selected.configurable" value="reference.projectsettings.compiler.javacompiler" />
+    <property name="settings.editor.selected.configurable" value="preferences.lookFeel" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -75,30 +75,30 @@
     <servers />
   </component>
   <component name="WindowStateProjectService">
-    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579359252715">
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1579954630765">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1579359252715" />
-    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1579726240964">
+    <state x="137" y="19" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1366.728@0.0.1366.728" timestamp="1579954630765" />
+    <state x="463" y="119" key="FileChooserDialogImpl" timestamp="1579950042235">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1579726240964" />
-    <state width="1323" height="220" key="GridCell.Tab.0.bottom" timestamp="1579728626806">
+    <state x="463" y="119" key="FileChooserDialogImpl/0.0.1366.728@0.0.1366.728" timestamp="1579950042235" />
+    <state width="1323" height="2" key="GridCell.Tab.0.bottom" timestamp="1579965632202">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="220" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1579728626806" />
-    <state width="1323" height="220" key="GridCell.Tab.0.center" timestamp="1579728626805">
+    <state width="1323" height="2" key="GridCell.Tab.0.bottom/0.0.1366.728@0.0.1366.728" timestamp="1579965632202" />
+    <state width="1323" height="2" key="GridCell.Tab.0.center" timestamp="1579965632202">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="220" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1579728626805" />
-    <state width="1323" height="220" key="GridCell.Tab.0.left" timestamp="1579728626805">
+    <state width="1323" height="2" key="GridCell.Tab.0.center/0.0.1366.728@0.0.1366.728" timestamp="1579965632202" />
+    <state width="1323" height="2" key="GridCell.Tab.0.left" timestamp="1579965632202">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="220" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1579728626805" />
-    <state width="1323" height="220" key="GridCell.Tab.0.right" timestamp="1579728626805">
+    <state width="1323" height="2" key="GridCell.Tab.0.left/0.0.1366.728@0.0.1366.728" timestamp="1579965632202" />
+    <state width="1323" height="2" key="GridCell.Tab.0.right" timestamp="1579965632202">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="1323" height="220" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1579728626805" />
+    <state width="1323" height="2" key="GridCell.Tab.0.right/0.0.1366.728@0.0.1366.728" timestamp="1579965632202" />
     <state width="1323" height="174" key="GridCell.Tab.1.bottom" timestamp="1579434050131">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -115,14 +115,22 @@
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state width="1323" height="174" key="GridCell.Tab.1.right/0.0.1366.728@0.0.1366.728" timestamp="1579434050131" />
-    <state width="498" height="446" key="SwitcherDM" timestamp="1579726243858">
+    <state x="184" y="7" key="SettingsEditor" timestamp="1579963371471">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state width="498" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1579726243858" />
-    <state x="384" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1579799181044">
+    <state x="184" y="7" key="SettingsEditor/0.0.1366.728@0.0.1366.728" timestamp="1579963371471" />
+    <state width="498" height="446" key="SwitcherDM" timestamp="1579950042148">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="384" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1579799181044" />
+    <state width="498" height="446" key="SwitcherDM/0.0.1366.728@0.0.1366.728" timestamp="1579950042148" />
+    <state x="384" y="188" key="com.intellij.ide.util.TipDialog" timestamp="1579989676722">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="384" y="188" key="com.intellij.ide.util.TipDialog/0.0.1366.728@0.0.1366.728" timestamp="1579989676722" />
+    <state x="327" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser" timestamp="1579954658092">
+      <screen x="0" y="0" width="1366" height="728" />
+    </state>
+    <state x="327" y="0" key="com.intellij.openapi.editor.actions.MultiplePasteAction$ClipboardContentChooser/0.0.1366.728@0.0.1366.728" timestamp="1579954658092" />
     <state x="260" y="100" width="846" height="603" key="com.intellij.xdebugger.impl.breakpoints.ui.BreakpointsDialogFactory$2" timestamp="1579433318384">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
